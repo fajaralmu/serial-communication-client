@@ -40,9 +40,9 @@ namespace SerialCommunication
 
             serial.Open();
             Console.WriteLine("=======Serial opened========");
-            CommandPayload ledOn = new CommandPayload(Commands.LED_ON, 13);
+            CommandPayload ledOn = new CommandPayload(Commands.LED_ON, 13, 0, 3);
             CommandPayload ledOff = new CommandPayload(Commands.LED_OFF, 13);
-            CommandPayload ledBlink = new CommandPayload(Commands.LED_BLINK, 13, 1);
+            CommandPayload ledBlink = new CommandPayload(Commands.LED_BLINK, 13, 1, 10);
            
             writeCommand(ledOn);
             Thread.Sleep(6000);
@@ -60,7 +60,8 @@ namespace SerialCommunication
             Thread.Sleep(10000);
 
             writeCommand(ledOff);
-
+            Thread.Sleep(10000);
+            
             // end //
 
             Console.ReadLine();
