@@ -1,33 +1,11 @@
 using System;
 using System.IO.Ports;
 using System.Threading;
+using serial_communication_client.Commands;
 
-namespace SerialCommunication
+namespace serial_communication_client
 {
-    class CommandPayload
-    {
-        readonly Commands name;
-        readonly byte[] arguments;
-
-        public int Size { get => 2 + arguments.Length; }
-        public CommandPayload(Commands name, params byte[] arguments)
-        {
-            this.name = name;
-            this.arguments = arguments;
-        }
-
-        public byte[] Extract()
-        {
-            byte[] result = new byte[Size];
-            result[0] = (byte)name;
-            result[1] = (byte)arguments.Length;
-            for (int i = 2; i < Size; i++)
-            {
-                result[i] = arguments[i - 2];
-            }
-            return result;
-        }
-    }
+   
     public class ProgramSerialWrite
     {
         static SerialPort serial;
@@ -40,28 +18,18 @@ namespace SerialCommunication
 
             serial.Open();
             Console.WriteLine("=======Serial opened========");
-            CommandPayload ledOn = new CommandPayload(Commands.LED_ON, 13, 0, 3);
-            CommandPayload ledOff = new CommandPayload(Commands.LED_OFF, 13);
-            CommandPayload ledBlink = new CommandPayload(Commands.LED_BLINK, 13, 1, 10);
+            CommandLedPayload ledOn = new CommandLedPayload(CommandName.LED_ON, 13, 1);
+            CommandLedPayload ledOff = new CommandLedPayload(CommandName.LED_OFF, 13, 1);
+            CommandLedPayload ledBlink = new CommandLedPayload(CommandName.LED_BLINK, 13, 0,  1);
            
-            writeCommand(ledOn);
-            Thread.Sleep(6000);
-
-            writeCommand(ledOff);
-            Thread.Sleep(6000);
-
-            writeCommand(ledOn);
-            Thread.Sleep(6000);
-
-            writeCommand(ledOff);
-            Thread.Sleep(6000);
-
-            writeCommand(ledBlink);
-            Thread.Sleep(10000);
-
-            writeCommand(ledOff);
-            Thread.Sleep(10000);
-            
+            for (int i = 0; i < 500; i++)
+            {
+                Console.WriteLine($"----------------------- { i } ----------------------");
+                CommandLedPayload cmd = i % 2 == 0 ? ledOn : ledOff;
+                writeCommand(cmd);
+                Thread.Sleep(cmd.DurationMs);
+            }
+            Console.WriteLine("************* END  COMMAND ***************");
             // end //
 
             Console.ReadLine();

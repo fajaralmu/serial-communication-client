@@ -1,5 +1,5 @@
-namespace SerialCommunication{
-    public enum Commands {
+namespace serial_communication_client{
+    public enum CommandName {
         NONE = 48,
         ALARM = 1,
         PRINT_CHAR = 49,
