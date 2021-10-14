@@ -1,8 +1,14 @@
 namespace serial_communication_client.Commands
 {
+
     public class CommandPayload
     {
         readonly CommandName name;
+        
+        // 0 -> Hardware PIN
+        // 1 -> durationSec
+        // 2 -> intervalSec
+        // 3 -> angle
         readonly byte[] arguments;
 
         public int Size { get => 2 + arguments.Length; }

@@ -7,6 +7,7 @@ namespace serial_communication_client{
         LED_ON = 51, // 3
         LED_OFF = 52, // 4
         LED_BLINK = 54, // 6
-        STOP_COMMAND = 53 // 5
+        STOP_COMMAND = 53, // 5
+        MOVE_SERVO = 56
     }
 }

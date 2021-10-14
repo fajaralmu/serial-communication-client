@@ -18,6 +18,30 @@ namespace serial_communication_client
 
             serial.Open();
             Console.WriteLine("=======Serial opened========");
+            
+            // SimulateLed();
+            SimulateMotorServo();
+
+            Console.WriteLine("************* END  COMMAND ***************");
+            // end //
+
+            Console.ReadLine();
+
+            serial.Close();
+        }
+
+        private static void SimulateMotorServo()
+        {
+            for (byte i = 0; i < 180; i+=10)
+            {
+                CommandPayload cmd = new CommandMotorPayload(9, i);
+                writeCommand(cmd);
+                Thread.Sleep(1000);
+            }
+        }
+
+        private static void SimulateLed()
+        {
             CommandLedPayload ledOn = new CommandLedPayload(CommandName.LED_ON, 13, 1);
             CommandLedPayload ledOff = new CommandLedPayload(CommandName.LED_OFF, 13, 1);
             CommandLedPayload ledBlink = new CommandLedPayload(CommandName.LED_BLINK, 13, 0,  1);
@@ -29,12 +53,6 @@ namespace serial_communication_client
                 writeCommand(cmd);
                 Thread.Sleep(cmd.DurationMs);
             }
-            Console.WriteLine("************* END  COMMAND ***************");
-            // end //
-
-            Console.ReadLine();
-
-            serial.Close();
         }
 
         static void writeCommand(CommandPayload command)
